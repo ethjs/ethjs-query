@@ -43,10 +43,21 @@ npm install --save ethjs-query
 ## Usage
 
 ```js
-const EthQuery = require('ethjs-query');
-const query = new EthQuery(window.web3.currentProvider);
+const Eth = require('ethjs-query');
+const eth = new Eth(providerObject);
 
-query.getBalance(address, numberOrTag, cb);
+eth.getBalance('0x407d73d8a49eeb85d32cf465507dd71d507100c1', cb);
+
+// result null <BigNumber ...>
+
+eth.sendTransaction({
+  from: '0x407d73d8a49eeb85d32cf465507dd71d507100c1',
+  to: '0x987d73d8a49eeb85d32cf462207dd71d50710033',
+  gas: 300000,
+  data: '0x',
+}, cb);
+
+// result null 0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470
 ```
 
 ## About
