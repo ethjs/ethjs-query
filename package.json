@@ -1,0 +1,113 @@
+{
+  "name": "ethjs-query",
+  "version": "0.0.1",
+  "description": "A simple query layer for the Ethereum RPC.",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "npm test",
+    "test": "mocha src/tests/**/*.js -R spec --timeout 2000000",
+    "release": "npmpub",
+    "pretest": "npm run lint",
+    "lint": "npm run lint:js",
+    "lint:eslint": "eslint --ignore-path .gitignore",
+    "lint:js": "npm run lint:eslint -- . ",
+    "lint:staged": "lint-staged",
+    "coveralls": "cat ./coverage/lcov/lcov.info | coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/silentcicero/ethjs-query.git"
+  },
+  "keywords": [
+    "ethereum",
+    "query",
+    "rpc",
+    "web3"
+  ],
+  "engines": {
+    "npm": ">=3",
+    "node": ">=6.5.0"
+  },
+  "author": "Nick Dodson <nick.dodson@consensys.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/silentcicero/ethjs-query/issues"
+  },
+  "homepage": "https://github.com/silentcicero/ethjs-query#readme",
+  "dependencies": {
+    "eth-query": "^2.1.0",
+    "ethjs-format": "0.0.2"
+  },
+  "devDependencies": {
+    "babel-eslint": "7.1.0",
+    "chai": "^3.5.0",
+    "coveralls": "2.11.9",
+    "eslint": "2.10.1",
+    "eslint-config-airbnb": "9.0.1",
+    "eslint-import-resolver-webpack": "0.2.4",
+    "eslint-plugin-import": "1.8.0",
+    "eslint-plugin-jsx-a11y": "1.2.0",
+    "eslint-plugin-react": "5.1.1",
+    "ethereumjs-testrpc": "^3.0.2",
+    "ethjs-abi": "0.0.1",
+    "ethjs-util": "0.0.1",
+    "lint-staged": "1.0.1",
+    "mocha": "^3.2.0",
+    "pre-commit": "1.1.3"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ],
+    "plugins": [
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./src"
+          ]
+        }
+      ]
+    ]
+  },
+  "lint-staged": {
+    "lint:eslint": "*.js"
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "extends": "airbnb",
+    "env": {
+      "node": true,
+      "mocha": true,
+      "es6": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module"
+    },
+    "rules": {
+      "import/no-unresolved": 2,
+      "comma-dangle": [
+        2,
+        "always-multiline"
+      ],
+      "indent": [
+        2,
+        2,
+        {
+          "SwitchCase": 1
+        }
+      ],
+      "no-console": 1,
+      "max-len": 0,
+      "prefer-template": 2,
+      "no-use-before-define": 0,
+      "newline-per-chained-call": 0,
+      "arrow-body-style": [
+        2,
+        "as-needed"
+      ]
+    }
+  },
+  "pre-commit": "lint:staged"
+}
