@@ -64,6 +64,54 @@ eth.sendTransaction({
 
 A simple wrapper around the `eth-query` module using the `ethjs-format` as a formatting layer.
 
+## Supported Methods
+
+```
+getBalance
+getCode
+getTransactionCount
+getStorageAt
+call
+protocolVersion
+syncing
+coinbase
+mining
+hashrate
+gasPrice
+accounts
+blockNumber
+getBlockTransactionCountByHash
+getBlockTransactionCountByNumber
+getUncleCountByBlockHash
+getUncleCountByBlockNumber
+sign
+sendTransaction
+sendRawTransaction
+estimateGas
+getBlockByHash
+getBlockByNumber
+getTransactionByHash
+getTransactionByBlockHashAndIndex
+getTransactionByBlockNumberAndIndex
+getTransactionReceipt
+getUncleByBlockHashAndIndex
+getUncleByBlockNumberAndIndex
+getCompilers
+compileLLL
+compileSolidity
+compileSerpent
+newFilter
+newBlockFilter
+newPendingTransactionFilter
+uninstallFilter
+getFilterChanges
+getFilterLogs
+getLogs
+getWork
+submitWork
+submitHashrate
+```
+
 ## Contributing
 
 Please help better the ecosystem by submitting issues and pull requests to default. We need all the help we can get to build the absolute best linting standards and utilities. We follow the AirBigNumberB linting standard. Please read more about contributing to `ethjs-query` in the `CONTRIBUTING.md`.

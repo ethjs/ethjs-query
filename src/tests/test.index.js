@@ -480,9 +480,10 @@ describe('ethjs-query', () => {
                   eth.call(callMethodTransaction, (callError, callResult) => { // eslint-disable-line
                     assert.equal(setMethodError, null);
                     const decodedUint = abi.decodeMethod(contractABI[2], callResult);
+
                     assert.equal(decodedUint[0].toNumber(10), uintValue);
 
-                    eth.getCode(receipt.contractAddress, (codeError, codeResult) => {
+                    eth.getCode(receipt.contractAddress, 'latest', (codeError, codeResult) => {
                       assert.equal(codeError, null);
                       assert.equal(typeof codeResult, 'string');
 
