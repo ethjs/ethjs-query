@@ -1,6 +1,6 @@
 {
   "name": "ethjs-query",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A simple query layer for the Ethereum RPC.",
   "main": "./src/index.js",
   "scripts": {
@@ -36,7 +36,7 @@
   "homepage": "https://github.com/silentcicero/ethjs-query#readme",
   "dependencies": {
     "eth-query": "2.1.0",
-    "ethjs-format": "0.0.5"
+    "ethjs-format": "0.0.6"
   },
   "devDependencies": {
     "babel-eslint": "7.1.0",
