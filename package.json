@@ -36,7 +36,7 @@
   "homepage": "https://github.com/silentcicero/ethjs-query#readme",
   "dependencies": {
     "eth-query": "2.1.0",
-    "ethjs-format": "0.0.4"
+    "ethjs-format": "0.0.5"
   },
   "devDependencies": {
     "babel-eslint": "7.1.0",
