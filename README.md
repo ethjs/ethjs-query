@@ -64,6 +64,27 @@ eth.sendTransaction({
 
 A simple wrapper around the `eth-query` module using the `ethjs-format` as a formatting layer.
 
+## Debugging Options
+
+`ethjs-query` comes equip with a full debug options for all data inputs and outputs.
+
+```js
+const Eth = require('ethjs-query');
+const eth = new Eth(providerObject, { debug: true, logger: console, jsonSpace: 0 });
+
+eth.accounts(cb);
+
+/* result
+[ethjs-query 2016-11-27T19:37:54.917Z] attempting method accounts with params [null]
+[ethjs-query 2016-11-27T19:37:54.917Z] [method 'accounts'] callback provided: true
+[ethjs-query 2016-11-27T19:37:54.917Z] [method 'accounts'] attempting input formatting of 0 inputs
+[ethjs-query 2016-11-27T19:37:54.917Z] [method 'accounts'] formatted inputs: []
+[ethjs-query 2016-11-27T19:37:54.917Z] [method 'accounts'] attempting query with formatted inputs...
+[ethjs-query 2016-11-27T19:37:54.919Z] [method 'accounts'] callback success, attempting formatting of raw outputs: ["0xb88643569c19d05dc67b960f91d9d696eebf808e","0xf...]
+[ethjs-query 2016-11-27T19:37:54.919Z] [method 'accounts'] formatted outputs: ["0xb88643569c19d05dc67b960f91d9d696eebf808e","0xf...]
+*/
+```
+
 ## Supported Methods
 
 ```
@@ -114,7 +135,7 @@ submitHashrate
 
 ## Contributing
 
-Please help better the ecosystem by submitting issues and pull requests to default. We need all the help we can get to build the absolute best linting standards and utilities. We follow the AirBigNumberB linting standard. Please read more about contributing to `ethjs-query` in the `CONTRIBUTING.md`.
+Please help better the ecosystem by submitting issues and pull requests to default. We need all the help we can get to build the absolute best linting standards and utilities. We follow the AirBNB linting standard and the unix philosophy.
 
 <!--
 ## Guides
@@ -174,7 +195,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
-
-## Original Port Author
-
-Richard Moore <me@ricmoo.com>

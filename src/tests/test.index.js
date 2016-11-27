@@ -497,5 +497,78 @@ describe('ethjs-query', () => {
         });
       });
     });
+
+    it('should function while deploy, use contract via eth_call, eth_getCode with debug, logger', (done) => {
+      const eth = new Eth(provider, { debug: true, logger: { log: () => {} }, jsonSpace: 2 }); // eslint-disable-line
+
+      eth.accounts((accountsError, accounts) => {
+        assert.equal(accountsError, null);
+        assert.equal(typeof accounts, 'object');
+
+        const testContractTransaction = {
+          from: accounts[0],
+          gas: 3000000,
+          data: '606060405234610000575b61016a806100186000396000f360606040526000357c010000000000000000000000000000000000000000000000000000000090048063119c56bd1461004e57806360fe47b11461008e5780636d4ce63c146100c1575b610000565b346100005761005b6100e4565b604051808381526020018273ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390f35b34610000576100a960048080359060200190919050506100f5565b60405180821515815260200191505060405180910390f35b34610000576100ce61015f565b6040518082815260200191505060405180910390f35b60006000610d7d91503390505b9091565b6000816000819055507f10e8e9bc5a1bde3dd6bb7245b52503fcb9d9b1d7c7b26743f82c51cc7cce917d60005433604051808381526020018273ffffffffffffffffffffffffffffffffffffffff1681526020019250505060405180910390a1600190505b919050565b600060005490505b9056',
+        };
+
+        const contractABI = [{'constant': false,'inputs': [],'name': 'setcompeltereturn','outputs': [{'name': '_newValue','type': 'uint256'},{'name': '_sender','type': 'address'}],'payable': false,'type': 'function'},{'constant': false,'inputs': [{'name': '_value','type': 'uint256'}],'name': 'set','outputs': [{'name': '','type': 'bool'}],'payable': false,'type': 'function'},{'constant': false,'inputs': [],'name': 'get','outputs': [{'name': 'storeValue','type': 'uint256'}],'payable': false,'type': 'function'},{'anonymous':false,'inputs':[{'indexed':false,'name':'_newValue','type':'uint256'},{'indexed':false,'name':'_sender','type':'address'}],'name':'SetComplete','type':'event'}]; // eslint-disable-line
+
+        eth.sendTransaction(testContractTransaction, (error, result) => {
+          assert.equal(error, null);
+          assert.equal(typeof result, 'string');
+          assert.equal(util.getBinarySize(result), 66);
+
+          setTimeout(() => {
+            eth.getTransactionReceipt(result, (receiptError, receipt) => {
+              assert.equal(receiptError, null);
+              assert.equal(typeof receipt, 'object');
+
+              assert.equal(util.getBinarySize(receipt.transactionHash), 66);
+              assert.equal(receipt.transactionIndex.toNumber(10) >= 0, true);
+              assert.equal(receipt.blockNumber.toNumber(10) >= 0, true);
+              assert.equal(receipt.cumulativeGasUsed.toNumber(10) >= 0, true);
+              assert.equal(receipt.gasUsed.toNumber(10) >= 0, true);
+              assert.equal(Array.isArray(receipt.logs), true);
+              assert.equal(typeof receipt.contractAddress, 'string');
+
+              const uintValue = 350000;
+              const setMethodTransaction = {
+                from: accounts[0],
+                to: receipt.contractAddress,
+                gas: 3000000,
+                data: abi.encodeMethod(contractABI[1], [uintValue]),
+              };
+
+              eth.sendTransaction(setMethodTransaction, (setMethodError, setMethodTx) => {
+                assert.equal(setMethodError, null);
+                assert.equal(typeof setMethodTx, 'string');
+                assert.equal(util.getBinarySize(setMethodTx), 66);
+
+                setTimeout(() => {
+                  const callMethodTransaction = {
+                    to: receipt.contractAddress,
+                    data: abi.encodeMethod(contractABI[2], []),
+                  };
+
+                  eth.call(callMethodTransaction, (callError, callResult) => { // eslint-disable-line
+                    assert.equal(setMethodError, null);
+                    const decodedUint = abi.decodeMethod(contractABI[2], callResult);
+
+                    assert.equal(decodedUint[0].toNumber(10), uintValue);
+
+                    eth.getCode(receipt.contractAddress, 'latest', (codeError, codeResult) => {
+                      assert.equal(codeError, null);
+                      assert.equal(typeof codeResult, 'string');
+
+                      done();
+                    });
+                  });
+                }, 400);
+              });
+            });
+          }, 1000);
+        });
+      });
+    });
   });
 });

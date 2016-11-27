@@ -3,8 +3,15 @@ const format = require('ethjs-format');
 
 module.exports = Eth;
 
-function Eth(provider) {
+function Eth(provider, options) {
   const self = this;
+  const optionsObject = options || {};
+  self.options = Object.assign({
+    debug: optionsObject.debug || false,
+    logger: optionsObject.logger || console,
+    jsonSpace: optionsObject.jsonSpace || 0,
+  });
+
   self.query = new Query(provider);
 }
 
@@ -59,19 +66,51 @@ Eth.prototype.makeQuery = function (method, args) { // eslint-disable-line
   self.query[method].apply(self.query, args);
 };
 
+Eth.prototype.log = function log(message) {
+  const self = this;
+
+  if (self.options.debug === true) {
+    const logMessage = `[ethjs-query ${(new Date()).toISOString()}] ${message}`;
+
+    self.options.logger.log(logMessage);
+  }
+};
+
+Eth.prototype.stringify = function log(object) {
+  const self = this;
+
+  return JSON.stringify(object, null, self.options.jsonSpace);
+};
+
 function generateFnFor(length, method) {
   function outputMethod() {
     const self = this;
     const args = [].slice.call(arguments); // eslint-disable-line
-    const cb = args.pop();
-    const inputs = format.formatInputs(method, args);
     const queryMethod = method.replace('eth_', ''); // eslint-disable-line
+
+    self.log(`attempting method ${queryMethod} with params ${self.stringify(args)}`);
+
+    const cb = args.pop();
+
+    self.log(`[method '${queryMethod}'] callback provided: ${typeof cb === 'function'}`);
+    self.log(`[method '${queryMethod}'] attempting input formatting of ${args.length} inputs`);
+
+    const inputs = format.formatInputs(method, args);
+
+    self.log(`[method '${queryMethod}'] formatted inputs: ${self.stringify(inputs)}`);
+
     const callback = function(error, result) { // eslint-disable-line
       if (error) {
         cb(error, result);
       } else {
+        self.log(`[method '${queryMethod}'] callback success, attempting formatting of raw outputs: ${self.stringify(result)}`);
+
         try {
-          cb(null, format.formatOutputs(method, result));
+          const methodOutputs = format.formatOutputs(method, result);
+
+          self.log(`[method '${queryMethod}'] formatted outputs: ${self.stringify(methodOutputs)}`);
+
+          cb(null, methodOutputs);
         } catch (formatError) {
           cb(`error while formatting data from the RPC: ${formatError}`, null);
         }
@@ -81,6 +120,8 @@ function generateFnFor(length, method) {
     inputs.push(callback);
 
     try {
+      self.log(`[method '${queryMethod}'] attempting query with formatted inputs...`);
+
       self.makeQuery(queryMethod, inputs);
     } catch (queryError) {
       cb(`error while querying the RPC provider: ${queryError}`, null);
