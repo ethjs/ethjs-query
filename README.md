@@ -2,19 +2,19 @@
 
 <div>
   <!-- Dependency Status -->
-  <a href="https://david-dm.org/SilentCicero/ethjs-query">
-    <img src="https://david-dm.org/SilentCicero/ethjs-query.svg"
+  <a href="https://david-dm.org/ethjs/ethjs-query">
+    <img src="https://david-dm.org/ethjs/ethjs-query.svg"
     alt="Dependency Status" />
   </a>
 
   <!-- devDependency Status -->
-  <a href="https://david-dm.org/SilentCicero/ethjs-query#info=devDependencies">
-    <img src="https://david-dm.org/SilentCicero/ethjs-query/dev-status.svg" alt="devDependency Status" />
+  <a href="https://david-dm.org/ethjs/ethjs-query#info=devDependencies">
+    <img src="https://david-dm.org/ethjs/ethjs-query/dev-status.svg" alt="devDependency Status" />
   </a>
 
   <!-- Build Status -->
-  <a href="https://travis-ci.org/SilentCicero/ethjs-query">
-    <img src="https://travis-ci.org/SilentCicero/ethjs-query.svg"
+  <a href="https://travis-ci.org/ethjs/ethjs-query">
+    <img src="https://travis-ci.org/ethjs/ethjs-query.svg"
     alt="Build Status" />
   </a>
 
@@ -22,6 +22,11 @@
   <a href="https://www.npmjs.org/package/ethjs-query">
     <img src="http://img.shields.io/npm/v/ethjs-query.svg"
     alt="NPM version" />
+  </a>
+
+  <!-- Test Coverage -->
+  <a href="https://coveralls.io/r/ethjs/ethjs-query">
+    <img src="https://coveralls.io/repos/github/ethjs/ethjs-query/badge.svg" alt="Test Coverage" />
   </a>
 
   <!-- Javascript Style -->
@@ -160,13 +165,13 @@ There is always a lot of work to do, and will have many rules to maintain. So pl
 
 Please consult our [Code of Conduct](CODE_OF_CONDUCT.md) docs before helping out.
 
-We communicate via [issues](https://github.com/SilentCicero/ethjs-query/issues) and [pull requests](https://github.com/SilentCicero/ethjs-query/pulls).
+We communicate via [issues](https://github.com/ethjs/ethjs-query/issues) and [pull requests](https://github.com/ethjs/ethjs-query/pulls).
 
 ## Important documents
 
 - [Changelog](CHANGELOG.md)
 - [Code of Conduct](CODE_OF_CONDUCT.md)
-- [License](https://raw.githubusercontent.com/SilentCicero/ethjs-query/master/LICENSE)
+- [License](https://raw.githubusercontent.com/ethjs/ethjs-query/master/LICENSE)
 
 ## Licence
 

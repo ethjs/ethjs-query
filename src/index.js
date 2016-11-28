@@ -87,6 +87,8 @@ function generateFnFor(length, method) {
     const self = this;
     const args = [].slice.call(arguments); // eslint-disable-line
     const queryMethod = method.replace('eth_', ''); // eslint-disable-line
+    // const queryError = error.query(method, args);
+    // if (queryError) throw new Error(queryError);
 
     self.log(`attempting method ${queryMethod} with params ${self.stringify(args)}`);
 

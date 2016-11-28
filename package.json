@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/silentcicero/ethjs-query.git"
+    "url": "git+ssh://git@github.com/ethjs/ethjs-query.git"
   },
   "keywords": [
     "ethereum",
@@ -31,12 +31,12 @@
   "author": "Nick Dodson <nick.dodson@consensys.net>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/silentcicero/ethjs-query/issues"
+    "url": "https://github.com/ethjs/ethjs-query/issues"
   },
-  "homepage": "https://github.com/silentcicero/ethjs-query#readme",
+  "homepage": "https://github.com/ethjs/ethjs-query#readme",
   "dependencies": {
     "eth-query": "2.1.0",
-    "ethjs-format": "0.0.6"
+    "ethjs-format": "0.0.8"
   },
   "devDependencies": {
     "babel-eslint": "7.1.0",
