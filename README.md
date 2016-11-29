@@ -60,7 +60,7 @@ eth.sendTransaction({
   to: '0x987d73d8a49eeb85d32cf462207dd71d50710033',
   gas: 300000,
   data: '0x',
-}, cb);
+}).then(cb).catch(cb);
 
 // result null 0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470
 ```

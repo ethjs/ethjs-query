@@ -1,6 +1,6 @@
 {
   "name": "ethjs-query",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A simple query layer for the Ethereum RPC.",
   "main": "./src/index.js",
   "scripts": {
@@ -37,7 +37,7 @@
   "homepage": "https://github.com/ethjs/ethjs-query#readme",
   "dependencies": {
     "eth-query": "2.1.0",
-    "ethjs-format": "0.0.8"
+    "ethjs-format": "0.0.9"
   },
   "devDependencies": {
     "babel-eslint": "7.1.0",
@@ -50,7 +50,7 @@
     "eslint-plugin-import": "1.8.0",
     "eslint-plugin-jsx-a11y": "1.2.0",
     "eslint-plugin-react": "5.1.1",
-    "ethereumjs-testrpc": "^3.0.2",
+    "ethereumjs-testrpc": "3.0.2",
     "ethjs-abi": "0.0.1",
     "ethjs-util": "0.0.1",
     "lint-staged": "1.0.1",

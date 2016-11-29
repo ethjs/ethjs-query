@@ -1,4 +1,5 @@
 const Eth = require('../index.js'); // eslint-disable-line
+const Eth2 = require('../index.js'); // eslint-disable-line
 const assert = require('chai').assert; // eslint-disable-line
 const util = require('ethjs-util');
 const EthQuery = require('eth-query'); // eslint-disable-line
@@ -20,22 +21,131 @@ describe('ethjs-query', () => {
       assert.equal(typeof eth.sendRawTransaction, 'function');
     });
 
-    it('should check if the rpc is eth_syncing', () => {
+    it('should construct normally with non Eth name', () => {
+      const eth = new Eth2(provider);
+
+      assert.equal(typeof eth, 'object');
+      assert.equal(typeof eth.query, 'object');
+      assert.equal(typeof eth.accounts, 'function');
+      assert.equal(typeof eth.getBalance, 'function');
+      assert.equal(typeof eth.sendTransaction, 'function');
+      assert.equal(typeof eth.sendRawTransaction, 'function');
+    });
+
+    it('should fail when no new flag is present', (done) => {
+      try {
+        const eth = Eth2(provider); // eslint-disable-line
+      } catch (error) {
+        assert.equal(typeof error, 'object');
+        done();
+      }
+    });
+
+    it('should fail nicely when no first param on getBalance', (done) => {
+      try {
+        const eth = new Eth(provider); // eslint-disable-line
+
+        eth.getBalance();
+      } catch (error) {
+        assert.equal(typeof error, 'object');
+      }
+
+      done();
+    });
+
+    it('should fail nicely when too many paramsEncoded on getBalance', (done) => {
+      try {
+        const eth = new Eth(provider); // eslint-disable-line
+
+        eth.getBalance('fsdfsd', 'sdffsd', 'dsfdfssf');
+      } catch (error) {
+        assert.equal(typeof error, 'object');
+      }
+
+      done();
+    });
+
+    it('should check if the rpc is eth_syncing', (done) => {
       const eth = new Eth(provider);
 
       eth.syncing((err, result) => {
         assert.equal(err, null);
         assert.equal(typeof result, 'boolean');
+
+        done();
       });
     });
 
-    it('should function while eth_coinbase', () => {
+    it('should function while eth_coinbase', (done) => {
       const eth = new Eth(provider);
 
       eth.coinbase((err, result) => {
         assert.equal(err, null);
         assert.equal(typeof result, 'string');
         assert.equal(util.getBinarySize(result), 42);
+
+        done();
+      });
+    });
+
+    it('should function while eth_coinbase using promise', (done) => {
+      const eth = new Eth(provider);
+
+      eth.coinbase()
+      .then((result) => {
+        assert.equal(typeof result, 'string');
+        assert.equal(util.getBinarySize(result), 42);
+
+        done();
+      })
+      .catch((err) => {
+        assert.equal(err, null);
+      });
+    });
+
+    it('should function while eth_getBalance using promise', (done) => {
+      const eth = new Eth(provider);
+
+      eth.coinbase()
+      .then((result) => {
+        assert.equal(typeof result, 'string');
+        assert.equal(util.getBinarySize(result), 42);
+
+        eth.getBalance(result)
+        .then((balance) => {
+          assert.equal(typeof balance, 'object');
+
+          done();
+        })
+        .catch((err) => {
+          assert.equal(err, null);
+        });
+      })
+      .catch((err) => {
+        assert.equal(err, null);
+      });
+    });
+
+    it('should function while eth_getBalance, optional and non optional latest', (done) => {
+      const eth = new Eth(provider);
+
+      eth.coinbase((err, coinbase) => {
+        assert.equal(err, null);
+        assert.equal(typeof coinbase, 'string');
+        assert.equal(util.getBinarySize(coinbase), 42);
+
+        eth.getBalance(coinbase, (balanceError, balance) => {
+          assert.equal(balanceError, null);
+          assert.equal(typeof balance, 'object');
+
+          eth.getBalance(coinbase, 'latest', (balanceLatestError, balanceLatest) => {
+            assert.equal(balanceLatestError, null);
+            assert.equal(typeof balanceLatest, 'object');
+            assert.equal(balance.toNumber(10), balanceLatest.toNumber(10));
+
+            done();
+          });
+        });
       });
     });
 
@@ -49,6 +159,7 @@ describe('ethjs-query', () => {
         assert.equal(result.length > 0, true);
         assert.equal(typeof result[0], 'string');
         assert.equal(util.getBinarySize(result[0]), 42);
+
         done();
       });
     });

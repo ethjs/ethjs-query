@@ -1,3 +1,9 @@
+# 0.0.4 -- promises, louder errors, more tests
+
+1. added promises
+2. louder errors
+3. more test coverage
+
 # 0.0.3 -- options with debug logging and other features
 
 1. added low level complete logging `new Eth(provider, { debug: false, logger: console, jsonSpace: 0 })`
