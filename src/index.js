@@ -22,20 +22,6 @@ function Eth(provider, options) {
   self.query = new Query(provider);
 }
 
-Object.keys(format.schema.methods).forEach((rpcMethodName) => {
-  const methodObject = format.schema.methods[rpcMethodName];
-  Object.defineProperty(Eth.prototype, rpcMethodName.replace('eth_', ''), {
-    enumerable: true,
-    value: generateFnFor(methodObject[3] || 1, rpcMethodName), // eslint-disable-line
-  });
-});
-
-Eth.prototype.makeQuery = function (method, args) { // eslint-disable-line
-  const self = this;
-
-  self.query[method].apply(self.query, args);
-};
-
 function generateFnFor(length, method) {
   function outputMethod() {
     var cb = (e, r) => {}; // eslint-disable-line
@@ -90,7 +76,7 @@ function generateFnFor(length, method) {
 
       log(debug, logger, `[method '${queryMethod}'] attempting query with formatted inputs...`);
 
-      self.makeQuery(queryMethod, inputs);
+      self.query[queryMethod].apply(self.query, inputs);
     });
 
     return output;
@@ -98,3 +84,11 @@ function generateFnFor(length, method) {
 
   return outputMethod;
 }
+
+Object.keys(format.schema.methods).forEach((rpcMethodName) => {
+  const methodObject = format.schema.methods[rpcMethodName];
+  Object.defineProperty(Eth.prototype, rpcMethodName.replace('eth_', ''), {
+    enumerable: true,
+    value: generateFnFor(methodObject[3] || 1, rpcMethodName),
+  });
+});
