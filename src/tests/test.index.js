@@ -103,6 +103,38 @@ describe('ethjs-query', () => {
       });
     });
 
+    it('should get acconts with promise', (done) => {
+      const eth = new Eth(provider);
+
+      eth.accounts()
+      .then((result) => {
+        assert.equal(typeof result, 'object');
+        assert.equal(result.length > 0, true);
+
+        done();
+      })
+      .catch((err) => {
+        assert.equal(err, null);
+      });
+    });
+
+    it('should reject bad getBalance call with an error', (done) => {
+      const eth = new Eth(provider);
+
+      eth.accounts((accountsError, accounts) => {
+        eth.sendTransaction({
+          from: accounts[0],
+          to: accounts[1],
+          gas: 10,
+          value: 100000,
+          data: '0x',
+        }).catch((err) => {
+          assert.equal(typeof err, 'object');
+          done();
+        });
+      });
+    });
+
     it('should function while eth_getBalance using promise', (done) => {
       const eth = new Eth(provider);
 

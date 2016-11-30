@@ -33,7 +33,7 @@ function generateFnFor(length, method) {
     const args = [].slice.call(arguments); // eslint-disable-line
     const queryMethod = method.replace('eth_', ''); // eslint-disable-line
 
-    log(debug, logger, `attempting method ${queryMethod} with params ${JSON.stringify(args, self.options.jsonSpace)}`);
+    log(debug, logger, `attempting method ${queryMethod} with params ${JSON.stringify(args, null, self.options.jsonSpace)}`);
 
     // if there is a callback, pop it out
     if (typeof args[args.length - 1] === 'function') {
@@ -46,14 +46,14 @@ function generateFnFor(length, method) {
     }
 
     if (args.length > maximumArgs) {
-      throw new Error(`method '${queryMethod}' requires at most ${maximumArgs} params, ${args.length} provided '${JSON.stringify(args)}'. For more information visit: https://github.com/ethereum/wiki/wiki/JSON-RPC#${method.toLowerCase()}`);
+      throw new Error(`method '${queryMethod}' requires at most ${maximumArgs} params, ${args.length} provided '${JSON.stringify(args, null, self.options.jsonSpace)}'. For more information visit: https://github.com/ethereum/wiki/wiki/JSON-RPC#${method.toLowerCase()}`);
     }
 
     log(debug, logger, `[method '${queryMethod}'] attempting input formatting of ${args.length} inputs`);
 
     const inputs = format.formatInputs(method, args);
 
-    log(debug, logger, `[method '${queryMethod}'] formatted inputs: ${JSON.stringify(inputs, self.options.jsonSpace)}`);
+    log(debug, logger, `[method '${queryMethod}'] formatted inputs: ${JSON.stringify(inputs, null, self.options.jsonSpace)}`);
 
     const output = new Promise((resolve, reject) => {
       const callback = function(error, result) { // eslint-disable-line
@@ -61,11 +61,11 @@ function generateFnFor(length, method) {
           reject(error);
           cb(error, result);
         } else {
-          log(debug, logger, `[method '${queryMethod}'] callback success, attempting formatting of raw outputs: ${JSON.stringify(result, self.options.jsonSpace)}`);
+          log(debug, logger, `[method '${queryMethod}'] callback success, attempting formatting of raw outputs: ${JSON.stringify(result, null, self.options.jsonSpace)}`);
 
           const methodOutputs = format.formatOutputs(method, result);
 
-          log(debug, logger, `[method '${queryMethod}'] formatted outputs: ${JSON.stringify(methodOutputs, self.options.jsonSpace)}`);
+          log(debug, logger, `[method '${queryMethod}'] formatted outputs: ${JSON.stringify(methodOutputs, null, self.options.jsonSpace)}`);
 
           resolve(methodOutputs);
           cb(null, methodOutputs);
