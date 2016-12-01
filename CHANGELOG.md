@@ -1,3 +1,10 @@
+# 0.0.5 -- refactor
+
+1. code cleanup
+2. more coverage
+3. better error handling
+4. less dependencies
+
 # 0.0.4 -- promises, louder errors, more tests
 
 1. added promises
