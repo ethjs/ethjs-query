@@ -36,7 +36,7 @@
   },
   "homepage": "https://github.com/ethjs/ethjs-query#readme",
   "dependencies": {
-    "eth-query": "2.1.0",
+    "json-rpc-random-id": "1.0.0",
     "ethjs-format": "0.0.9"
   },
   "devDependencies": {

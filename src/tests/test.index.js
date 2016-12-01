@@ -14,7 +14,6 @@ describe('ethjs-query', () => {
       const eth = new Eth(provider);
 
       assert.equal(typeof eth, 'object');
-      assert.equal(typeof eth.query, 'object');
       assert.equal(typeof eth.accounts, 'function');
       assert.equal(typeof eth.getBalance, 'function');
       assert.equal(typeof eth.sendTransaction, 'function');
@@ -25,7 +24,6 @@ describe('ethjs-query', () => {
       const eth = new Eth2(provider);
 
       assert.equal(typeof eth, 'object');
-      assert.equal(typeof eth.query, 'object');
       assert.equal(typeof eth.accounts, 'function');
       assert.equal(typeof eth.getBalance, 'function');
       assert.equal(typeof eth.sendTransaction, 'function');
