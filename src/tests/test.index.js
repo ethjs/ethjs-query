@@ -1,11 +1,10 @@
-const Eth = require('../index.js'); // eslint-disable-line
-const Eth2 = require('../index.js'); // eslint-disable-line
-const assert = require('chai').assert; // eslint-disable-line
+const Eth = require('../index.js');
+const Eth2 = require('../index.js');
+const assert = require('chai').assert;
 const util = require('ethjs-util');
-const EthQuery = require('eth-query'); // eslint-disable-line
 const TestRPC = require('ethereumjs-testrpc');
-const BigNumber = require('bignumber.js'); // eslint-disable-line
-const abi = require('ethjs-abi'); // eslint-disable-line
+const BigNumber = require('bignumber.js');
+const abi = require('ethjs-abi');
 const provider = TestRPC.provider({});
 
 describe('ethjs-query', () => {
