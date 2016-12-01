@@ -27,11 +27,17 @@ Eth.prototype.log = function log(message) {
 Eth.prototype.sendAsync = function sendAsync(opts, cb) {
   const self = this;
   self.currentProvider.sendAsync(createPayload(opts), (err, response) => {
-    if (err || response.error) return cb(new Error(`[ethjs-query] with payload ${JSON.stringify(opts, null, 0)} ${err || response.error}`));
-    if (!err && response.error) return cb(new Error(`[ethjs-query] RPC Error: ${response.error.message}`));
+    if (err || response.error) return cb(new Error(`[ethjs-query] ${(response.error && 'rpc' || '')} error with payload ${JSON.stringify(opts, null, 0)} ${err || response.error}`));
     return cb(null, response.result);
   });
 };
+
+Object.keys(format.schema.methods).forEach((rpcMethodName) => {
+  Object.defineProperty(Eth.prototype, rpcMethodName.replace('eth_', ''), {
+    enumerable: true,
+    value: generateFnFor(rpcMethodName, format.schema.methods[rpcMethodName]),
+  });
+});
 
 function containsCallback(args) {
   return (args.length > 0 && typeof args[args.length - 1] === 'function');
@@ -49,10 +55,6 @@ function generateFnFor(method, methodObject) {
       protoCallback = args.pop();
     }
 
-    if (methodObject[3] && args.length < methodObject[3]) {
-      args.push('latest');
-    }
-
     return new Promise((resolve, reject) => {
       const cb = (callbackError, callbackResult) => {
         if (callbackError) {
@@ -60,12 +62,16 @@ function generateFnFor(method, methodObject) {
           protoCallback(callbackError, null);
         } else {
           try {
+            self.log(`attempting method formatting for '${protoMethod}' with raw outputs: ${JSON.stringify(callbackResult, null, self.options.jsonSpace)}`);
+
             const methodOutputs = format.formatOutputs(method, callbackResult);
+
+            self.log(`method formatting success for '${protoMethod}' formatted result: ${JSON.stringify(methodOutputs, null, self.options.jsonSpace)}`);
 
             resolve(methodOutputs);
             protoCallback(null, methodOutputs);
           } catch (outputFormattingError) {
-            const outputError = new Error(`[ethjs-query] while formatting inputs '${JSON.stringify(callbackResult, null, self.options.jsonSpace)}' for method '${protoMethod}' error: ${outputFormattingError}`);
+            const outputError = new Error(`[ethjs-query] while formatting outputs from RPC '${JSON.stringify(callbackResult, null, self.options.jsonSpace)}' for method '${protoMethod}' ${outputFormattingError}`);
 
             reject(outputError);
             protoCallback(outputError, null);
@@ -74,30 +80,31 @@ function generateFnFor(method, methodObject) {
       };
 
       if (args.length < methodObject[2]) {
-        cb(new Error(`[ethjs-query] method '${protoMethod}' requires at least ${methodObject[2]} input (format type ${methodObject[0][0]}), ${args.length} provided. For more information visit: https://github.com/ethereum/wiki/wiki/JSON-RPC#${method.toLowerCase()}`));
+        return cb(new Error(`[ethjs-query] method '${protoMethod}' requires at least ${methodObject[2]} input (format type ${methodObject[0][0]}), ${args.length} provided. For more information visit: https://github.com/ethereum/wiki/wiki/JSON-RPC#${method.toLowerCase()}`));
       }
 
       if (args.length > methodObject[0].length) {
-        cb(new Error(`[ethjs-query] method '${protoMethod}' requires at most ${methodObject[0].length} params, ${args.length} provided '${JSON.stringify(args, null, self.options.jsonSpace)}'. For more information visit: https://github.com/ethereum/wiki/wiki/JSON-RPC#${method.toLowerCase()}`));
+        return cb(new Error(`[ethjs-query] method '${protoMethod}' requires at most ${methodObject[0].length} params, ${args.length} provided '${JSON.stringify(args, null, self.options.jsonSpace)}'. For more information visit: https://github.com/ethereum/wiki/wiki/JSON-RPC#${method.toLowerCase()}`));
       }
+
+      if (methodObject[3] && args.length < methodObject[3]) {
+        args.push('latest');
+      }
+
+      self.log(`attempting method formatting for '${protoMethod}' with inputs ${JSON.stringify(args, null, self.options.jsonSpace)}`);
 
       try {
         inputs = format.formatInputs(method, args);
+
+        self.log(`method formatting success for '${protoMethod}' with formatted result: ${JSON.stringify(inputs, null, self.options.jsonSpace)}`);
       } catch (formattingError) {
-        cb(new Error(`[ethjs-query] while formatting inputs '${JSON.stringify(args, null, self.options.jsonSpace)}' for method '${protoMethod}' error: ${formattingError}`));
+        return cb(new Error(`[ethjs-query] while formatting inputs '${JSON.stringify(args, null, self.options.jsonSpace)}' for method '${protoMethod}' error: ${formattingError}`));
       }
 
-      self.sendAsync({ method, params: inputs }, cb);
+      return self.sendAsync({ method, params: inputs }, cb);
     });
   };
 }
-
-Object.keys(format.schema.methods).forEach((rpcMethodName) => {
-  Object.defineProperty(Eth.prototype, rpcMethodName.replace('eth_', ''), {
-    enumerable: true,
-    value: generateFnFor(rpcMethodName, format.schema.methods[rpcMethodName]),
-  });
-});
 
 function createPayload(data) {
   return Object.assign({

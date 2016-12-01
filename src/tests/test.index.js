@@ -29,6 +29,74 @@ describe('ethjs-query', () => {
       assert.equal(typeof eth.sendRawTransaction, 'function');
     });
 
+    it('should fail when provider is not valid', (done) => {
+      try {
+        const eth = new Eth(''); // eslint-disable-line
+      } catch (error) {
+        assert.equal(typeof error, 'object');
+        done();
+      }
+    });
+
+    it('should fail when provider is not valid', (done) => {
+      try {
+        const eth = new Eth(342323); // eslint-disable-line
+      } catch (error) {
+        assert.equal(typeof error, 'object');
+        done();
+      }
+    });
+
+    it('debugger should function', (done) => {
+      const eth = new Eth(provider, { debug: true, logger: { log: (message) => {
+        assert.equal(typeof message, 'string');
+      }}}); // eslint-disable-line
+
+      eth.accounts((err, result) => {
+        assert.equal(typeof err, 'object');
+        assert.equal(result, null);
+        done();
+      });
+    });
+
+    it('should fail with response error payload', (done) => {
+      const eth = new Eth({
+        sendAsync: (opts, cb) => {
+          cb(false, { error: 'bad data..' });
+        },
+      }); // eslint-disable-line
+
+      eth.accounts((err, result) => {
+        assert.equal(typeof err, 'object');
+        assert.equal(result, null);
+        done();
+      });
+    });
+
+    it('should fail with invalid payload response (formatting error)', (done) => {
+      const eth = new Eth({
+        sendAsync: (opts, cb) => {
+          cb(false, { result: [38274978, 983428943] });
+        },
+      }); // eslint-disable-line
+
+      eth.accounts((err, result) => {
+        assert.equal(typeof err, 'object');
+        assert.equal(result, null);
+        done();
+      });
+    });
+
+    it('should fail with invalid method input (formatting error)', (done) => {
+      const eth = new Eth(provider); // eslint-disable-line
+
+      eth.getBalance(234842387, (err, result) => {
+        assert.equal(typeof err, 'object');
+        assert.equal(result, null);
+        done();
+      });
+    });
+
     it('should fail when no new flag is present', (done) => {
       try {
         const eth = Eth2(provider); // eslint-disable-line
@@ -38,28 +106,26 @@ describe('ethjs-query', () => {
       }
     });
 
-    it('should fail nicely when no first param on getBalance', (done) => {
-      try {
-        const eth = new Eth(provider); // eslint-disable-line
+    it('should fail nicely when too little params on getBalance', (done) => {
+      const eth = new Eth(provider); // eslint-disable-line
 
-        eth.getBalance();
-      } catch (error) {
-        assert.equal(typeof error, 'object');
-      }
+      eth.getBalance((err, result) => {
+        assert.equal(typeof err, 'object');
+        assert.equal(result, null);
 
-      done();
+        done();
+      });
     });
 
     it('should fail nicely when too many paramsEncoded on getBalance', (done) => {
-      try {
-        const eth = new Eth(provider); // eslint-disable-line
+      const eth = new Eth(provider); // eslint-disable-line
 
-        eth.getBalance('fsdfsd', 'sdffsd', 'dsfdfssf');
-      } catch (error) {
+      eth.getBalance('fsdfsd', 'sdffsd', 'dsfdfssf', (error, result) => {
         assert.equal(typeof error, 'object');
-      }
+        assert.equal(result, null);
 
-      done();
+        done();
+      });
     });
 
     it('should check if the rpc is eth_syncing', (done) => {
