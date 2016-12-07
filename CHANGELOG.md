@@ -1,3 +1,8 @@
+# 0.1.1 -- new packages
+
+1. new ethjs-format
+2. more docs
+
 # 0.0.5 -- refactor
 
 1. code cleanup

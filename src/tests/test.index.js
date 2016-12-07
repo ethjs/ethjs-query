@@ -3,7 +3,7 @@ const Eth2 = require('../index.js');
 const assert = require('chai').assert;
 const util = require('ethjs-util');
 const TestRPC = require('ethereumjs-testrpc');
-const BigNumber = require('bignumber.js');
+const BigNumber = require('bn.js');
 const abi = require('ethjs-abi');
 const provider = TestRPC.provider({});
 
@@ -236,7 +236,7 @@ describe('ethjs-query', () => {
           eth.getBalance(coinbase, 'latest', (balanceLatestError, balanceLatest) => {
             assert.equal(balanceLatestError, null);
             assert.equal(typeof balanceLatest, 'object');
-            assert.equal(balance.toNumber(10), balanceLatest.toNumber(10));
+            assert.equal(balance.toString(10), balanceLatest.toString(10));
 
             done();
           });
@@ -338,12 +338,12 @@ describe('ethjs-query', () => {
         eth.getBalance(accounts[0], (err, result) => {
           assert.equal(err, null);
           assert.equal(typeof result, 'object');
-          assert.equal(result.toNumber() > 0, true);
+          assert.equal(result.gt(0), true);
 
           eth.getBalance(accounts[0], 'latest', (err2, result2) => {
             assert.equal(err2, null);
             assert.equal(typeof result2, 'object');
-            assert.equal(result2.toNumber() > 0, true);
+            assert.equal(result2.gt(0), true);
             done();
           });
         });
