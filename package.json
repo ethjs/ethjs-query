@@ -118,7 +118,7 @@
     }
   },
   "dependencies": {
-    "ethjs-format": "^0.1.1",
+    "ethjs-format": "0.1.2",
     "json-rpc-random-id": "1.0.0"
   },
   "devDependencies": {

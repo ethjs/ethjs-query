@@ -147,32 +147,32 @@ new Eth(...);
 </script>
 ```
 
+Note, even though `ethjs` should have transformed and polyfilled most of the requirements to run this module across most modern browsers. You may want to look at an additional polyfill for extra support.
+
+Use a polyfill service such as `Polyfill.io` to ensure complete cross-browser support:
+https://polyfill.io/
+
 ## Latest Webpack Figures
 
-Hash: 312cb780824459f46121                                                         
+Hash: 615525a053e86699341d                                                         
 Version: webpack 2.1.0-beta.15
-Time: 802ms
+Time: 1453ms
              Asset    Size  Chunks             Chunk Names
-    ethjs-query.js  243 kB       0  [emitted]  main
-ethjs-query.js.map  303 kB       0  [emitted]  main
+    ethjs-query.js  237 kB       0  [emitted]  main
+ethjs-query.js.map  295 kB       0  [emitted]  main
    [2] ./lib/index.js 4.97 kB {0} [built]
     + 2 hidden modules
 
 > ethjs-query@0.1.1 build:umd:min /home/nick/github/ethjs-query
 > cross-env BABEL_ENV=commonjs NODE_ENV=production webpack --config ./internals/webpack/webpack.config.js ./lib/index.js --progress
 
-Hash: cdbbccab14a0f8e45077                                                         
+Hash: a122a9ca6440db14c38a                                                         
 Version: webpack 2.1.0-beta.15
-Time: 3238ms
+Time: 5533ms
              Asset    Size  Chunks             Chunk Names
-ethjs-query.min.js  105 kB       0  [emitted]  main
+ethjs-query.min.js  103 kB       0  [emitted]  main
    [2] ./lib/index.js 4.97 kB {0} [built]
     + 2 hidden modules
-
-Note, even though `ethjs` should have transformed and polyfilled most of the requirements to run this module across most modern browsers. You may want to look at an additional polyfill for extra support.
-
-Use a polyfill service such as `Polyfill.io` to ensure complete cross-browser support:
-https://polyfill.io/
 
 ## Other Awesome Modules, Tools and Frameworks
 
