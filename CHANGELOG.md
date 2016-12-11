@@ -1,3 +1,8 @@
+# 0.1.5 -- format update
+
+1. Tigher formatting enforcement
+2. Small schema update
+
 # 0.1.4 -- less dependencies
 
 1. Better formatting

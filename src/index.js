@@ -45,6 +45,7 @@ function generateFnFor(method, methodObject) {
   return function outputMethod() {
     var protoCallback = () => {}; // eslint-disable-line
     var inputs = null; // eslint-disable-line
+    var inputError = null; // eslint-disable-line
     const self = this;
     const args = [].slice.call(arguments); // eslint-disable-line
     const protoMethod = method.replace('eth_', ''); // eslint-disable-line
@@ -61,9 +62,7 @@ function generateFnFor(method, methodObject) {
         } else {
           try {
             self.log(`attempting method formatting for '${protoMethod}' with raw outputs: ${JSON.stringify(callbackResult, null, self.options.jsonSpace)}`);
-
             const methodOutputs = format.formatOutputs(method, callbackResult);
-
             self.log(`method formatting success for '${protoMethod}' formatted result: ${JSON.stringify(methodOutputs, null, self.options.jsonSpace)}`);
 
             resolve(methodOutputs);
@@ -93,7 +92,6 @@ function generateFnFor(method, methodObject) {
 
       try {
         inputs = format.formatInputs(method, args);
-
         self.log(`method formatting success for '${protoMethod}' with formatted result: ${JSON.stringify(inputs, null, self.options.jsonSpace)}`);
       } catch (formattingError) {
         return cb(new Error(`[ethjs-query] while formatting inputs '${JSON.stringify(args, null, self.options.jsonSpace)}' for method '${protoMethod}' error: ${formattingError}`));

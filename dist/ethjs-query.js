@@ -2026,8 +2026,10 @@ function formatObject(formatter, value, encode) {
   }
 
   // assume formatObject is an object, go through keys and format each
-  Object.keys(value).forEach(function (valueKey) {
-    output[valueKey] = format(formatObject[valueKey], value[valueKey], encode);
+  Object.keys(formatObject).forEach(function (valueKey) {
+    if (valueKey !== '__required' && typeof value[valueKey] !== 'undefined') {
+      output[valueKey] = format(formatObject[valueKey], value[valueKey], encode);
+    }
   });
 
   return output;
@@ -2214,6 +2216,7 @@ function generateFnFor(method, methodObject) {
   return function outputMethod() {
     var protoCallback = function protoCallback() {}; // eslint-disable-line
     var inputs = null; // eslint-disable-line
+    var inputError = null; // eslint-disable-line
     var self = this;
     var args = [].slice.call(arguments); // eslint-disable-line
     var protoMethod = method.replace('eth_', ''); // eslint-disable-line
@@ -2230,9 +2233,7 @@ function generateFnFor(method, methodObject) {
         } else {
           try {
             self.log('attempting method formatting for \'' + protoMethod + '\' with raw outputs: ' + JSON.stringify(callbackResult, null, self.options.jsonSpace));
-
             var methodOutputs = format.formatOutputs(method, callbackResult);
-
             self.log('method formatting success for \'' + protoMethod + '\' formatted result: ' + JSON.stringify(methodOutputs, null, self.options.jsonSpace));
 
             resolve(methodOutputs);
@@ -2262,7 +2263,6 @@ function generateFnFor(method, methodObject) {
 
       try {
         inputs = format.formatInputs(method, args);
-
         self.log('method formatting success for \'' + protoMethod + '\' with formatted result: ' + JSON.stringify(inputs, null, self.options.jsonSpace));
       } catch (formattingError) {
         return cb(new Error('[ethjs-query] while formatting inputs \'' + JSON.stringify(args, null, self.options.jsonSpace) + '\' for method \'' + protoMethod + '\' error: ' + formattingError));
@@ -6689,7 +6689,7 @@ module.exports = {
 			"logsBloom": "D",
 			"transactionsRoot": "D",
 			"stateRoot": "D",
-			"receiptRoot": "D",
+			"receiptsRoot": "D",
 			"miner": "D",
 			"difficulty": "Q",
 			"totalDifficulty": "Q",

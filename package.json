@@ -1,6 +1,6 @@
 {
   "name": "ethjs-query",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A simple query layer for the Ethereum RPC.",
   "main": "lib/index.js",
   "files": [
@@ -117,7 +117,7 @@
     }
   },
   "dependencies": {
-    "ethjs-format": "0.1.4"
+    "ethjs-format": "0.1.5"
   },
   "devDependencies": {
     "babel-cli": "6.18.0",
