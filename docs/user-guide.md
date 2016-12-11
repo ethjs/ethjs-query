@@ -22,7 +22,8 @@ eth.getBalance('0x407d73d8a49eeb85d32cf465507dd71d507100c1', cb);
 eth.sendTransaction({
   from: '0x407d73d8a49eeb85d32cf465507dd71d507100c1',
   to: '0x987d73d8a49eeb85d32cf462207dd71d50710033',
-  gas: 300000,
+  value: new BN('29384'),
+  gas: 3000000,
   data: '0x',
 }).then(cb).catch(cb);
 
@@ -51,9 +52,19 @@ eth.accounts(cb);
 */
 ```
 
-## Promise and Callbacks
+## Amorphic Data Formatting
 
-`ethjs-query` supports both callbacks and promises for all RPC methods.
+`ethjs-query` uses the `ethjs-format` module to format incoming and outgoing RPC data payloads. The primary formatting task is numbers. Number values can be inputed as: `BigNumber`, `BN`, `string`, `hex` or `actual numbers`. Because the blockchain does not support decimal or negative numbers, any kind of decimal or negative number will cause an error return. All received number values are returned as BN.js object instances.
+
+Read more about the formatting layer here: [ethjs-format](http://github.com/ethjs/ethjs-format)
+
+## Async Only
+
+All methods are `async` only, requiring either a callback or promise. `ethjs-query` supports both callbacks and promises for all RPC methods.
+
+## Error handling
+
+Error handling is done through function callbacks or promised catches.
 
 ## Supported Methods
 
@@ -154,37 +165,46 @@ https://polyfill.io/
 
 ## Latest Webpack Figures
 
-Hash: 615525a053e86699341d                                                         
+```
 Version: webpack 2.1.0-beta.15
-Time: 1453ms
+Time: 859ms
              Asset    Size  Chunks             Chunk Names
-    ethjs-query.js  237 kB       0  [emitted]  main
-ethjs-query.js.map  295 kB       0  [emitted]  main
-   [2] ./lib/index.js 4.97 kB {0} [built]
-    + 2 hidden modules
+    ethjs-query.js  175 kB       0  [emitted]  main
+ethjs-query.js.map  219 kB       0  [emitted]  main
+   [4] ./lib/index.js 5.02 kB {0} [built]
+    + 13 hidden modules
 
-> ethjs-query@0.1.1 build:umd:min /home/nick/github/ethjs-query
-> cross-env BABEL_ENV=commonjs NODE_ENV=production webpack --config ./internals/webpack/webpack.config.js ./lib/index.js --progress
-
-Hash: a122a9ca6440db14c38a                                                         
 Version: webpack 2.1.0-beta.15
-Time: 5533ms
-             Asset    Size  Chunks             Chunk Names
-ethjs-query.min.js  103 kB       0  [emitted]  main
-   [2] ./lib/index.js 4.97 kB {0} [built]
-    + 2 hidden modules
+Time: 2699ms
+             Asset     Size  Chunks             Chunk Names
+ethjs-query.min.js  78.5 kB       0  [emitted]  main
+   [4] ./lib/index.js 5.02 kB {0} [built]
+    + 13 hidden modules
+```
 
 ## Other Awesome Modules, Tools and Frameworks
 
- - [web3.js](https://github.com/ethereum/web3.js) -- the original Ethereum swiss army knife **Ethereum Foundation**
- - [ethereumjs](https://github.com/ethereumjs) -- critical ethereumjs infrastructure **Ethereum Foundation**
+### Foundation
+ - [web3.js](https://github.com/ethereum/web3.js) -- the original Ethereum JS swiss army knife **Ethereum Foundation**
+ - [ethereumjs](https://github.com/ethereumjs) -- critical ethereum javascript infrastructure **Ethereum Foundation**
  - [browser-solidity](https://ethereum.github.io/browser-solidity) -- an in browser Solidity IDE **Ethereum Foundation**
+
+### Nodes
+  - [geth](https://github.com/ethereum/go-ethereum) Go-Ethereum
+  - [parity](https://github.com/ethcore/parity) Rust-Ethereum build in Rust
+  - [testrpc](https://github.com/ethereumjs/testrpc) Testing Node (ethereumjs-vm)
+
+### Testing
  - [wafr](https://github.com/silentcicero/wafr) -- a super simple Solidity testing framework
  - [truffle](https://github.com/ConsenSys/truffle) -- a solidity/js dApp framework
  - [embark](https://github.com/iurimatias/embark-framework) -- a solidity/js dApp framework
  - [dapple](https://github.com/nexusdev/dapple) -- a solidity dApp framework
  - [chaitherium](https://github.com/SafeMarket/chaithereum) -- a JS web3 unit testing framework
  - [contest](https://github.com/DigixGlobal/contest) -- a JS testing framework for contracts
+
+### Wallets
+ - [ethers-wallet](https://github.com/ethers-io/ethers-wallet) -- an amazingly small Ethereum wallet
+ - [metamask](https://metamask.io/) -- turns your browser into an Ethereum enabled browser =D
 
 ## Our Relationship with Ethereum & EthereumJS
 
