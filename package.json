@@ -1,9 +1,8 @@
 {
   "name": "ethjs-query",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "description": "A simple query layer for the Ethereum RPC.",
   "main": "lib/index.js",
-  "browser": "dist/ethjs-query.js",
   "files": [
     "dist",
     "internals",
@@ -118,8 +117,7 @@
     }
   },
   "dependencies": {
-    "ethjs-format": "0.1.0",
-    "json-rpc-random-id": "1.0.0"
+    "ethjs-format": "0.1.4"
   },
   "devDependencies": {
     "babel-cli": "6.18.0",
@@ -164,7 +162,6 @@
     "eslint-plugin-react": "5.1.1",
     "ethereumjs-testrpc": "3.0.2",
     "ethjs-abi": "0.0.1",
-    "ethjs-util": "0.0.1",
     "istanbul": "0.4.5",
     "lint-staged": "1.0.1",
     "mocha": "3.2.0",
@@ -209,5 +206,5 @@
       ]
     }
   },
-  "pre-commit": "lint:staged"
+  "pre-commit": "build"
 }

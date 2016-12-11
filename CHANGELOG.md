@@ -1,3 +1,21 @@
+# 0.1.4 -- less dependencies
+
+1. Better formatting
+2. Less dependencies
+3. ID generation done in house
+4. 25kb less file size
+5. More docs
+
+# 0.1.2 -- config fixes
+
+1. webpack config updates
+2. build config updates
+
+# 0.1.1 -- new packages
+
+1. new ethjs-format
+2. more docs
+
 # 0.0.5 -- refactor
 
 1. code cleanup

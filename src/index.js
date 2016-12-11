@@ -1,4 +1,3 @@
-const createRandomId = require('json-rpc-random-id')();
 const format = require('ethjs-format');
 
 module.exports = Eth;
@@ -14,8 +13,9 @@ function Eth(provider, options) {
     debug: optionsObject.debug || false,
     logger: optionsObject.logger || console,
     jsonSpace: optionsObject.jsonSpace || 0,
+    max: optionsObject.max || 9999999999999,
   });
-
+  self.idCounter = Math.floor(Math.random() * self.options.max);
   self.currentProvider = provider;
 }
 
@@ -26,7 +26,9 @@ Eth.prototype.log = function log(message) {
 
 Eth.prototype.sendAsync = function sendAsync(opts, cb) {
   const self = this;
-  self.currentProvider.sendAsync(createPayload(opts), (err, response) => {
+  self.idCounter = self.idCounter % self.options.max;
+
+  self.currentProvider.sendAsync(createPayload(opts, self.idCounter++), (err, response) => {
     if (err || response.error) return cb(new Error(`[ethjs-query] ${(response.error && 'rpc' || '')} error with payload ${JSON.stringify(opts, null, 0)} ${err || response.error}`));
     return cb(null, response.result);
   });
@@ -39,10 +41,6 @@ Object.keys(format.schema.methods).forEach((rpcMethodName) => {
   });
 });
 
-function containsCallback(args) {
-  return (args.length > 0 && typeof args[args.length - 1] === 'function');
-}
-
 function generateFnFor(method, methodObject) {
   return function outputMethod() {
     var protoCallback = () => {}; // eslint-disable-line
@@ -51,7 +49,7 @@ function generateFnFor(method, methodObject) {
     const args = [].slice.call(arguments); // eslint-disable-line
     const protoMethod = method.replace('eth_', ''); // eslint-disable-line
 
-    if (containsCallback(args)) {
+    if (args.length > 0 && typeof args[args.length - 1] === 'function') {
       protoCallback = args.pop();
     }
 
@@ -106,9 +104,9 @@ function generateFnFor(method, methodObject) {
   };
 }
 
-function createPayload(data) {
+function createPayload(data, id) {
   return Object.assign({
-    id: createRandomId(),
+    id,
     jsonrpc: '2.0',
     params: [],
   }, data);
