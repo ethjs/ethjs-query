@@ -29,8 +29,8 @@ Eth.prototype.sendAsync = function sendAsync(opts, cb) {
   self.idCounter = self.idCounter % self.options.max;
   self.currentProvider.sendAsync(createPayload(opts, self.idCounter++), (err, response) => {
     const responseObject = response || {};
-    if (err || responseObject.error) return cb(new Error(`[ethjs-query] ${(responseObject.error && 'rpc' || '')} error with payload ${JSON.stringify(opts, null, 0)} ${JSON.stringify(err || response.error, null, 0)}`));
-    return cb(null, response.result);
+    if (err || responseObject.error) return cb(new Error(`[ethjs-query] ${(responseObject.error && 'rpc' || '')} error with payload ${JSON.stringify(opts, null, 0)} ${err || (JSON.stringify(response.error, null, 0))}`));
+    return cb(null, responseObject.result);
   });
 };
 

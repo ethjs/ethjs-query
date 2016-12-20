@@ -1,3 +1,7 @@
+# 0.2.0 -- handle 500 errors better
+
+1. Handles 500/404/303 errors
+
 # 0.1.8 -- bn formatting update
 
 1. Bignumber formatting update

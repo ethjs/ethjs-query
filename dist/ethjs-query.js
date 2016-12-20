@@ -2200,8 +2200,8 @@ Eth.prototype.sendAsync = function sendAsync(opts, cb) {
   self.idCounter = self.idCounter % self.options.max;
   self.currentProvider.sendAsync(createPayload(opts, self.idCounter++), function (err, response) {
     var responseObject = response || {};
-    if (err || responseObject.error) return cb(new Error('[ethjs-query] ' + (responseObject.error && 'rpc' || '') + ' error with payload ' + JSON.stringify(opts, null, 0) + ' ' + JSON.stringify(err || response.error, null, 0)));
-    return cb(null, response.result);
+    if (err || responseObject.error) return cb(new Error('[ethjs-query] ' + (responseObject.error && 'rpc' || '') + ' error with payload ' + JSON.stringify(opts, null, 0) + ' ' + (err || JSON.stringify(response.error, null, 0))));
+    return cb(null, responseObject.result);
   });
 };
 
@@ -2290,8 +2290,6 @@ function createPayload(data, id) {
 
 var BN = __webpack_require__(7);
 var stripHexPrefix = __webpack_require__(0);
-
-console.log(new BN('87234987239872349872489724897248972348972389472498728723897234', 16).toString(10));
 
 /**
  * Returns a BN object, converts a number value to a BN
