@@ -1,3 +1,7 @@
+# 0.1.8 -- bn formatting update
+
+1. Bignumber formatting update
+
 # 0.1.7 -- Better RPC error handling
 
 1. Better RPC error handling
