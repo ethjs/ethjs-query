@@ -1,4 +1,5 @@
 const format = require('ethjs-format');
+const EthRPC = require('ethjs-rpc');
 
 module.exports = Eth;
 
@@ -13,25 +14,14 @@ function Eth(provider, options) {
     debug: optionsObject.debug || false,
     logger: optionsObject.logger || console,
     jsonSpace: optionsObject.jsonSpace || 0,
-    max: optionsObject.max || 9999999999999,
   });
-  self.idCounter = Math.floor(Math.random() * self.options.max);
-  self.currentProvider = provider;
+  self.rpc = new EthRPC(provider);
+  self.setProvider = self.rpc.setProvider;
 }
 
 Eth.prototype.log = function log(message) {
   const self = this;
   if (self.options.debug) self.options.logger.log(`[ethjs-query log] ${message}`);
-};
-
-Eth.prototype.sendAsync = function sendAsync(opts, cb) {
-  const self = this;
-  self.idCounter = self.idCounter % self.options.max;
-  self.currentProvider.sendAsync(createPayload(opts, self.idCounter++), (err, response) => {
-    const responseObject = response || {};
-    if (err || responseObject.error) return cb(new Error(`[ethjs-query] ${(responseObject.error && 'rpc' || '')} error with payload ${JSON.stringify(opts, null, 0)} ${err || (JSON.stringify(response.error, null, 0))}`));
-    return cb(null, responseObject.result);
-  });
 };
 
 Object.keys(format.schema.methods).forEach((rpcMethodName) => {
@@ -97,15 +87,7 @@ function generateFnFor(method, methodObject) {
         return cb(new Error(`[ethjs-query] while formatting inputs '${JSON.stringify(args, null, self.options.jsonSpace)}' for method '${protoMethod}' error: ${formattingError}`));
       }
 
-      return self.sendAsync({ method, params: inputs }, cb);
+      return self.rpc.sendAsync({ method, params: inputs }, cb);
     });
   };
-}
-
-function createPayload(data, id) {
-  return Object.assign({
-    id,
-    jsonrpc: '2.0',
-    params: [],
-  }, data);
 }

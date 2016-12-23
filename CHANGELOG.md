@@ -1,3 +1,7 @@
+# 0.2.1 -- handle non RPC errors better
+
+1. Handle non rpc errors better
+
 # 0.2.0 -- handle 500 errors better
 
 1. Handles 500/404/303 errors
