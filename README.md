@@ -48,6 +48,7 @@ npm install --save ethjs-query
 ## Usage
 
 ```js
+const BN = require('bn.js');
 const HttpProvider = require('ethjs-provider-http');
 const Eth = require('ethjs-query');
 const eth = new Eth(new HttpProvider('http://localhost:8545'));
@@ -59,7 +60,7 @@ eth.getBalance('0x407d73d8a49eeb85d32cf465507dd71d507100c1', cb);
 eth.sendTransaction({
   from: '0x407d73d8a49eeb85d32cf465507dd71d507100c1',
   to: '0x987d73d8a49eeb85d32cf462207dd71d50710033',
-  value: new BN('6500000')
+  value: new BN('6500000'),
   gas: 3000000,
   data: '0x',
 }).then(cb).catch(cb);

@@ -73,6 +73,16 @@ describe('ethjs-query', () => {
       });
     });
 
+    it('should handle empty getTransactionReceipt', (done) => {
+      const eth = new Eth(provider); // eslint-disable-line
+
+      eth.getTransactionReceipt('0x7f9de10bdd8686734c1b2dd2b7e53ea3e1ffe7fd4698a3a521ec8e09570ca121', (err, result) => {
+        assert.equal(typeof err, 'object');
+        assert.equal(result, null);
+        done();
+      });
+    });
+
     it('should fail with invalid payload response (formatting error)', (done) => {
       const eth = new Eth({
         sendAsync: (opts, cb) => {

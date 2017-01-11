@@ -1,3 +1,28 @@
+# 0.2.1 -- handle non RPC errors better
+
+1. Handle non rpc errors better
+
+# 0.2.0 -- handle 500 errors better
+
+1. Handles 500/404/303 errors
+
+# 0.1.8 -- bn formatting update
+
+1. Bignumber formatting update
+
+# 0.1.7 -- Better RPC error handling
+
+1. Better RPC error handling
+
+# 0.1.6 -- Strinigy RPC error
+
+1. Added JSON.strinify for RPC error handling
+
+# 0.1.5 -- format update
+
+1. Tigher formatting enforcement
+2. Small schema update
+
 # 0.1.4 -- less dependencies
 
 1. Better formatting

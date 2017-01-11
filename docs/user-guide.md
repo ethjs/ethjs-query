@@ -166,20 +166,21 @@ https://polyfill.io/
 ## Latest Webpack Figures
 
 ```
+Hash: e5b1a721ec5ba5bc55c9
 Version: webpack 2.1.0-beta.15
-Time: 859ms
+Time: 891ms
              Asset    Size  Chunks             Chunk Names
-    ethjs-query.js  175 kB       0  [emitted]  main
-ethjs-query.js.map  219 kB       0  [emitted]  main
-   [4] ./lib/index.js 5.02 kB {0} [built]
-    + 13 hidden modules
+    ethjs-query.js  177 kB       0  [emitted]  main
+ethjs-query.js.map  222 kB       0  [emitted]  main
+   [5] ./lib/index.js 4.45 kB {0} [built]
+    + 14 hidden modules
 
 Version: webpack 2.1.0-beta.15
-Time: 2699ms
+Time: 2786ms
              Asset     Size  Chunks             Chunk Names
-ethjs-query.min.js  78.5 kB       0  [emitted]  main
-   [4] ./lib/index.js 5.02 kB {0} [built]
-    + 13 hidden modules
+ethjs-query.min.js  79.4 kB       0  [emitted]  main
+   [5] ./lib/index.js 4.45 kB {0} [built]
+    + 14 hidden modules
 ```
 
 ## Other Awesome Modules, Tools and Frameworks

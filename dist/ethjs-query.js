@@ -63,7 +63,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -103,9 +103,9 @@ module.exports = function stripHexPrefix(str) {
 
 'use strict'
 
-var base64 = __webpack_require__(6)
-var ieee754 = __webpack_require__(9)
-var isArray = __webpack_require__(10)
+var base64 = __webpack_require__(7)
+var ieee754 = __webpack_require__(10)
+var isArray = __webpack_require__(11)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -1883,7 +1883,7 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer, __webpack_require__(12)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer, __webpack_require__(13)))
 
 /***/ },
 /* 2 */
@@ -1913,9 +1913,9 @@ module.exports = function isHexPrefixed(str) {
 "use strict";
 'use strict';
 
-var schema = __webpack_require__(11);
-var util = __webpack_require__(8);
-var numberToBN = __webpack_require__(5);
+var schema = __webpack_require__(12);
+var util = __webpack_require__(9);
+var numberToBN = __webpack_require__(6);
 var stripHexPrefix = __webpack_require__(0);
 var padToEven = util.padToEven;
 var arrayContainsArray = util.arrayContainsArray;
@@ -2026,8 +2026,10 @@ function formatObject(formatter, value, encode) {
   }
 
   // assume formatObject is an object, go through keys and format each
-  Object.keys(value).forEach(function (valueKey) {
-    output[valueKey] = format(formatObject[valueKey], value[valueKey], encode);
+  Object.keys(formatObject).forEach(function (valueKey) {
+    if (valueKey !== '__required' && typeof value[valueKey] !== 'undefined') {
+      output[valueKey] = format(formatObject[valueKey], value[valueKey], encode);
+    }
   });
 
   return output;
@@ -2158,12 +2160,92 @@ module.exports = {
 
 /***/ },
 /* 4 */
+/***/ function(module, exports) {
+
+"use strict";
+'use strict';
+
+module.exports = EthRPC;
+
+/**
+ * Constructs the EthRPC instance
+ *
+ * @method EthRPC
+ * @param {Object} cprovider the eth rpc provider web3 standard..
+ * @param {Object} options the options, if any
+ * @returns {Object} ethrpc instance
+ */
+function EthRPC(cprovider, options) {
+  var self = this;
+  var optionsObject = options || {};
+
+  if (!(this instanceof EthRPC)) {
+    throw new Error('[ethjs-rpc] the EthRPC object requires the "new" flag in order to function normally (i.e. `const eth = new EthRPC(provider);`).');
+  }
+
+  self.options = Object.assign({
+    jsonSpace: optionsObject.jsonSpace || 0,
+    max: optionsObject.max || 9999999999999
+  });
+  self.idCounter = Math.floor(Math.random() * self.options.max);
+  self.setProvider = function (provider) {
+    if (typeof provider !== 'object') {
+      throw new Error('[ethjs-rpc] the EthRPC object requires that the first input \'provider\' must be an object, got \'' + typeof provider + '\' (i.e. \'const eth = new EthRPC(provider);\')');
+    }
+
+    self.currentProvider = provider;
+  };
+  self.setProvider(cprovider);
+}
+
+/**
+ * The main send async method
+ *
+ * @method sendAsync
+ * @param {Object} payload the rpc payload object
+ * @param {Function} cb the async standard callback
+ * @callback {Object|Array|Boolean|String} vary result instance output
+ */
+EthRPC.prototype.sendAsync = function sendAsync(payload, cb) {
+  var self = this;
+  self.idCounter = self.idCounter % self.options.max;
+  self.currentProvider.sendAsync(createPayload(payload, self.idCounter++), function (err, response) {
+    var responseObject = response || {};
+
+    if (err || responseObject.error) {
+      var payloadErrorMessage = '[ethjs-rpc] ' + (responseObject.error && 'rpc' || '') + ' error with payload ' + JSON.stringify(payload, null, self.options.jsonSpace) + ' ' + (err || JSON.stringify(responseObject.error, null, self.options.jsonSpace));
+      return cb(new Error(payloadErrorMessage), null);
+    }
+
+    return cb(null, responseObject.result);
+  });
+};
+
+/**
+ * A simple create payload method
+ *
+ * @method createPayload
+ * @param {Object} data the rpc payload data
+ * @param {String} id the rpc data payload ID
+ * @returns {Object} payload the completed payload object
+ */
+function createPayload(data, id) {
+  return Object.assign({
+    id: id,
+    jsonrpc: '2.0',
+    params: []
+  }, data);
+}
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
 var format = __webpack_require__(3);
+var EthRPC = __webpack_require__(4);
 
 module.exports = Eth;
 
@@ -2181,26 +2263,15 @@ function Eth(provider, options) {
   self.options = Object.assign({
     debug: optionsObject.debug || false,
     logger: optionsObject.logger || console,
-    jsonSpace: optionsObject.jsonSpace || 0,
-    max: optionsObject.max || 9999999999999
+    jsonSpace: optionsObject.jsonSpace || 0
   });
-  self.idCounter = Math.floor(Math.random() * self.options.max);
-  self.currentProvider = provider;
+  self.rpc = new EthRPC(provider);
+  self.setProvider = self.rpc.setProvider;
 }
 
 Eth.prototype.log = function log(message) {
   var self = this;
   if (self.options.debug) self.options.logger.log('[ethjs-query log] ' + message);
-};
-
-Eth.prototype.sendAsync = function sendAsync(opts, cb) {
-  var self = this;
-  self.idCounter = self.idCounter % self.options.max;
-
-  self.currentProvider.sendAsync(createPayload(opts, self.idCounter++), function (err, response) {
-    if (err || response.error) return cb(new Error('[ethjs-query] ' + (response.error && 'rpc' || '') + ' error with payload ' + JSON.stringify(opts, null, 0) + ' ' + (err || response.error)));
-    return cb(null, response.result);
-  });
 };
 
 Object.keys(format.schema.methods).forEach(function (rpcMethodName) {
@@ -2214,6 +2285,7 @@ function generateFnFor(method, methodObject) {
   return function outputMethod() {
     var protoCallback = function protoCallback() {}; // eslint-disable-line
     var inputs = null; // eslint-disable-line
+    var inputError = null; // eslint-disable-line
     var self = this;
     var args = [].slice.call(arguments); // eslint-disable-line
     var protoMethod = method.replace('eth_', ''); // eslint-disable-line
@@ -2230,9 +2302,7 @@ function generateFnFor(method, methodObject) {
         } else {
           try {
             self.log('attempting method formatting for \'' + protoMethod + '\' with raw outputs: ' + JSON.stringify(callbackResult, null, self.options.jsonSpace));
-
             var methodOutputs = format.formatOutputs(method, callbackResult);
-
             self.log('method formatting success for \'' + protoMethod + '\' formatted result: ' + JSON.stringify(methodOutputs, null, self.options.jsonSpace));
 
             resolve(methodOutputs);
@@ -2262,33 +2332,24 @@ function generateFnFor(method, methodObject) {
 
       try {
         inputs = format.formatInputs(method, args);
-
         self.log('method formatting success for \'' + protoMethod + '\' with formatted result: ' + JSON.stringify(inputs, null, self.options.jsonSpace));
       } catch (formattingError) {
         return cb(new Error('[ethjs-query] while formatting inputs \'' + JSON.stringify(args, null, self.options.jsonSpace) + '\' for method \'' + protoMethod + '\' error: ' + formattingError));
       }
 
-      return self.sendAsync({ method: method, params: inputs }, cb);
+      return self.rpc.sendAsync({ method: method, params: inputs }, cb);
     });
   };
 }
 
-function createPayload(data, id) {
-  return Object.assign({
-    id: id,
-    jsonrpc: '2.0',
-    params: []
-  }, data);
-}
-
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
-var BN = __webpack_require__(7);
+var BN = __webpack_require__(8);
 var stripHexPrefix = __webpack_require__(0);
 
 /**
@@ -2300,22 +2361,25 @@ var stripHexPrefix = __webpack_require__(0);
 module.exports = function numberToBN(arg) {
   if (typeof arg === 'string' || typeof arg === 'number') {
     var multiplier = new BN(1); // eslint-disable-line
-    var stringArg = stripHexPrefix(String(arg).toLowerCase().trim()); // eslint-disable-line
+    var formattedString = String(arg).toLowerCase().trim();
+    var isHexPrefixed = formattedString.substr(0, 2) === '0x' || formattedString.substr(0, 3) === '-0x';
+    var stringArg = stripHexPrefix(formattedString); // eslint-disable-line
     if (stringArg.substr(0, 1) === '-') {
       stringArg = stripHexPrefix(stringArg.slice(1));
-      multiplier = new BN(-1);
+      multiplier = new BN(-1, 10);
     }
+    stringArg = stringArg === '' ? '0' : stringArg;
 
-    if (!stringArg.match(/^-?[0-9]+$/) && stringArg.match(/^[0-9A-Fa-f]+$/) || stringArg.match(/^[a-fA-F]+$/)) {
+    if (!stringArg.match(/^-?[0-9]+$/) && stringArg.match(/^[0-9A-Fa-f]+$/) || stringArg.match(/^[a-fA-F]+$/) || isHexPrefixed === true && stringArg.match(/^[0-9A-Fa-f]+$/)) {
       return new BN(stringArg, 16).mul(multiplier);
     }
 
-    if (stringArg.match(/^-?[0-9]+$/) || stringArg === '') {
+    if ((stringArg.match(/^-?[0-9]+$/) || stringArg === '') && isHexPrefixed === false) {
       return new BN(stringArg, 10).mul(multiplier);
     }
   } else if (typeof arg === 'object' && arg.toString && !arg.pop && !arg.push) {
     if (arg.toString(10).match(/^-?[0-9]+$/) && (arg.mul || arg.dividedToIntegerBy)) {
-      return new BN(arg.toString(10));
+      return new BN(arg.toString(10), 10);
     }
   }
 
@@ -2323,7 +2387,7 @@ module.exports = function numberToBN(arg) {
 };
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -2444,7 +2508,7 @@ function fromByteArray (uint8) {
 
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {(function (module, exports) {
@@ -5875,10 +5939,10 @@ function fromByteArray (uint8) {
   };
 })(typeof module === 'undefined' || module, this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)(module)))
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6105,7 +6169,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -6195,7 +6259,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports) {
 
 var toString = {}.toString;
@@ -6206,7 +6270,7 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports) {
 
 module.exports = {
@@ -6689,7 +6753,7 @@ module.exports = {
 			"logsBloom": "D",
 			"transactionsRoot": "D",
 			"stateRoot": "D",
-			"receiptRoot": "D",
+			"receiptsRoot": "D",
 			"miner": "D",
 			"difficulty": "Q",
 			"totalDifficulty": "Q",
@@ -6812,7 +6876,7 @@ module.exports = {
 };
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports) {
 
 var g;
@@ -6837,7 +6901,7 @@ module.exports = g;
 
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports) {
 
 module.exports = function(module) {
