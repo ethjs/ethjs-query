@@ -1,3 +1,13 @@
+# 0.2.6 -- added new ethjs-format
+
+1. no longer padds quantity hex values, as per standard.
+
+# 0.2.4 -- personal sign and ecrecover
+
+# 0.2.3 -- package updates
+
+1. Update ethjs-rpc, handle 405 errors better
+
 # 0.2.1 -- handle non RPC errors better
 
 1. Handle non rpc errors better

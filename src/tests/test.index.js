@@ -17,6 +17,8 @@ describe('ethjs-query', () => {
       assert.equal(typeof eth.getBalance, 'function');
       assert.equal(typeof eth.sendTransaction, 'function');
       assert.equal(typeof eth.sendRawTransaction, 'function');
+      assert.equal(typeof eth.personal_sign, 'function');
+      assert.equal(typeof eth.personal_ecRecover, 'function');
     });
 
     it('should construct normally with non Eth name', () => {
