@@ -288,7 +288,7 @@ describe('ethjs-query', () => {
 
       /// @title Voting with delegation.
       contract Ballot {
-        function () payable {
+        function () public payable {
         }
 
         uint cool;
