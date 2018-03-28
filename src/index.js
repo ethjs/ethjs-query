@@ -33,9 +33,9 @@ Object.keys(format.schema.methods).forEach((rpcMethodName) => {
 
 function generateFnFor(method, methodObject) {
   return function outputMethod() {
-    var protoCallback = () => {}; // eslint-disable-line
-    var inputs = null; // eslint-disable-line
-    var inputError = null; // eslint-disable-line
+    let protoCallback = null; // () => {}; // eslint-disable-line
+    let inputs = null; // eslint-disable-line
+    let inputError = null; // eslint-disable-line
     const self = this;
     const args = [].slice.call(arguments); // eslint-disable-line
     const protoMethod = method.replace('eth_', ''); // eslint-disable-line
@@ -44,11 +44,11 @@ function generateFnFor(method, methodObject) {
       protoCallback = args.pop();
     }
 
-    return new Promise((resolve, reject) => {
+    const prom = new Promise((resolve, reject) => {
       const cb = (callbackError, callbackResult) => {
         if (callbackError) {
           reject(callbackError);
-          protoCallback(callbackError, null);
+          // protoCallback(callbackError, null);
         } else {
           try {
             self.log(`attempting method formatting for '${protoMethod}' with raw outputs: ${JSON.stringify(callbackResult, null, self.options.jsonSpace)}`);
@@ -56,12 +56,12 @@ function generateFnFor(method, methodObject) {
             self.log(`method formatting success for '${protoMethod}' formatted result: ${JSON.stringify(methodOutputs, null, self.options.jsonSpace)}`);
 
             resolve(methodOutputs);
-            protoCallback(null, methodOutputs);
+            // protoCallback(null, methodOutputs);
           } catch (outputFormattingError) {
             const outputError = new Error(`[ethjs-query] while formatting outputs from RPC '${JSON.stringify(callbackResult, null, self.options.jsonSpace)}' for method '${protoMethod}' ${outputFormattingError}`);
 
             reject(outputError);
-            protoCallback(outputError, null);
+            // protoCallback(outputError, null);
           }
         }
       };
@@ -89,5 +89,13 @@ function generateFnFor(method, methodObject) {
 
       return self.rpc.sendAsync({ method, params: inputs }, cb);
     });
+
+    if (protoCallback) {
+      prom.then(result => protoCallback(null, result)).catch(err => protoCallback(err, null));
+
+      return undefined;
+    }
+
+    return prom;
   };
 }

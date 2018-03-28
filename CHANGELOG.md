@@ -1,3 +1,8 @@
+# 0.3.4 -- added new ethjs-format
+
+1. Unhandled promise rejection fixed, and is no longer being swolloed.
+2. ethjs-rpc bump to 0.1.9
+
 # 0.2.6 -- added new ethjs-format
 
 1. no longer padds quantity hex values, as per standard.
