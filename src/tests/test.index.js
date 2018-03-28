@@ -1,3 +1,4 @@
+require('hard-rejection')();
 const Eth = require('../index.js');
 const Eth2 = require('../index.js');
 const assert = require('chai').assert;
@@ -6,6 +7,8 @@ const TestRPC = require('ethereumjs-testrpc');
 const BigNumber = require('bn.js');
 const abi = require('ethjs-abi');
 const provider = TestRPC.provider({});
+
+
 
 describe('ethjs-query', () => {
   describe('construction', () => {
@@ -288,7 +291,7 @@ describe('ethjs-query', () => {
 
       /// @title Voting with delegation.
       contract Ballot {
-        function () payable {
+        function () public payable {
         }
 
         uint cool;
