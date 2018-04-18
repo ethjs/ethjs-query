@@ -1,3 +1,9 @@
+# 0.3.5 -- new eth filter ID changes
+
+1. Adds padded quantities
+2. Fixed problem where number ID 1 for filter ID encodes to 0x1, when it should be 0x01 (with padding)
+3. Methods affected: `eth.getFilterChanges` `eth.uninstallFilter` `eth.getFilterLogs`
+
 # 0.3.4 -- added new ethjs-format
 
 1. Unhandled promise rejection fixed, and is no longer being swolloed.
