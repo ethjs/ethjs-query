@@ -118,7 +118,8 @@
   },
   "dependencies": {
     "ethjs-format": "0.2.0",
-    "ethjs-rpc": "0.1.9"
+    "ethjs-rpc": "0.1.9",
+    "promise-to-callback": "^1.0.0"
   },
   "devDependencies": {
     "babel-cli": "6.18.0",
@@ -158,8 +159,8 @@
     "eslint-plugin-import": "1.8.0",
     "eslint-plugin-jsx-a11y": "1.2.0",
     "eslint-plugin-react": "5.1.1",
-    "ethereumjs-testrpc": "3.0.2",
     "ethjs-abi": "0.0.1",
+    "ganache-core": "^2.1.0",
     "hard-rejection": "^1.0.0",
     "istanbul": "0.4.5",
     "json-loader": "0.5.4",
