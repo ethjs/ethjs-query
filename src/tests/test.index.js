@@ -3,12 +3,17 @@ const Eth = require('../index.js');
 const Eth2 = require('../index.js');
 const assert = require('chai').assert;
 const util = require('ethjs-util');
-const TestRPC = require('ethereumjs-testrpc');
+const GanacheCore = require('ganache-core');
 const BigNumber = require('bn.js');
 const abi = require('ethjs-abi');
-const provider = TestRPC.provider({});
 
 describe('ethjs-query', () => {
+  let provider;
+
+  beforeEach(() => {
+    provider = GanacheCore.provider();
+  });
+
   describe('construction', () => {
     it('should construct normally', () => {
       const eth = new Eth(provider);
@@ -56,8 +61,8 @@ describe('ethjs-query', () => {
       }}}); // eslint-disable-line
 
       eth.accounts((err, result) => {
-        assert.equal(typeof err, 'object');
-        assert.equal(result, null);
+        assert.equal(err, null);
+        assert.equal(Array.isArray(result), true);
         done();
       });
     });
@@ -297,11 +302,9 @@ describe('ethjs-query', () => {
       `;
 
       eth.compileSolidity(testSolidity, (err, result) => {
-        assert.equal(err, null);
-        assert.equal(typeof result, 'object');
-        assert.equal(typeof result.code, 'string');
-        assert.equal(typeof result.info, 'object');
-        assert.equal(result.info.language, 'Solidity');
+        assert.ok(err);
+        assert.ok(err.message.includes('Method eth_compileSolidity not supported.'));
+        assert.equal(result, null);
         done();
       });
     });
@@ -406,20 +409,16 @@ describe('ethjs-query', () => {
     });
 
     it('should function while eth_getCompilers', (done) => {
-      /*
       const eth = new Eth(provider); // eslint-disable-line
 
-      eth.getCompilers((compilerError, compilerResilt) => {
-        console.log(compilerError, compilerResilt);
-
-        // assert.equal(error, null);
-        // assert.equal(typeof result, 'object');
-        // assert.equal(Array.isArray(result), true);
-        // assert.equal(typeof result[0], 'string');
+      eth.getCompilers((error, result) => {
+        assert.equal(error, null);
+        assert.equal(typeof result, 'object');
+        assert.equal(Array.isArray(result), true);
+        assert.equal(typeof result[0], 'string');
 
         done();
-      }); */
-      done();
+      });
     });
 
     it('should function while eth_hashrate', (done) => {
@@ -524,7 +523,7 @@ describe('ethjs-query', () => {
             assert.equal(receiptError, null);
             assert.equal(typeof receipt, 'object');
 
-            eth.getTransactionByBlockNumberAndIndex(2, 0, (blockError, block) => {
+            eth.getTransactionByBlockNumberAndIndex(1, 0, (blockError, block) => {
               assert.equal(blockError, null);
               assert.equal(typeof block, 'object');
               assert.equal(util.getBinarySize(block.blockHash), 66);
