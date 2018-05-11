@@ -288,27 +288,6 @@ describe('ethjs-query', () => {
       });
     });
 
-    it('should function while eth_compileSolidity', (done) => {
-      const eth = new Eth(provider);
-      const testSolidity = `pragma solidity ^0.4.0;
-
-      /// @title Voting with delegation.
-      contract Ballot {
-        function () public payable {
-        }
-
-        uint256 public cool;
-      }
-      `;
-
-      eth.compileSolidity(testSolidity, (err, result) => {
-        assert.ok(err);
-        assert.ok(err.message.includes('Method eth_compileSolidity not supported.'));
-        assert.equal(result, null);
-        done();
-      });
-    });
-
     it('should function while eth_estimateGas', (done) => {
       const eth = new Eth(provider);
       eth.accounts((accountsError, accounts) => {
