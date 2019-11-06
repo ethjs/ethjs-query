@@ -163,7 +163,7 @@
     "bignumber.js": "3.0.1",
     "chai": "3.5.0",
     "coveralls": "2.11.9",
-    "eslint": "2.10.1",
+    "eslint": "4.18.2",
     "eslint-config-airbnb": "9.0.1",
     "eslint-import-resolver-webpack": "0.2.4",
     "eslint-plugin-import": "1.8.0",
