@@ -56,7 +56,7 @@ eth.accounts(cb);
 
 `ethjs-query` uses the `ethjs-format` module to format incoming and outgoing RPC data payloads. The primary formatting task is numbers. Number values can be inputed as: `BigNumber`, `BN`, `string`, `hex` or `actual numbers`. Because the blockchain does not support decimal or negative numbers, any kind of decimal or negative number will cause an error return. All received number values are returned as BN.js object instances.
 
-Read more about the formatting layer here: [ethjs-format](http://github.com/ethjs/ethjs-format)
+Read more about the formatting layer here: [ethjs-format](http://github.com/MetaMask/ethjs-format)
 
 ## Async Only
 

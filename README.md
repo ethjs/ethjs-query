@@ -1,17 +1,6 @@
 ## ethjs-query
 
 <div>
-  <!-- Dependency Status -->
-  <a href="https://david-dm.org/ethjs/ethjs-query">
-    <img src="https://david-dm.org/ethjs/ethjs-query.svg"
-    alt="Dependency Status" />
-  </a>
-
-  <!-- devDependency Status -->
-  <a href="https://david-dm.org/ethjs/ethjs-query#info=devDependencies">
-    <img src="https://david-dm.org/ethjs/ethjs-query/dev-status.svg" alt="devDependency Status" />
-  </a>
-
   <!-- NPM Version -->
   <a href="https://www.npmjs.org/package/ethjs-query">
     <img src="http://img.shields.io/npm/v/ethjs-query.svg"
@@ -67,7 +56,7 @@ This module supports all Ethereum RPC methods and is designed completely to spec
 
 `ethjs-query` uses the `ethjs-format` module to format incoming and outgoing RPC data payloads. The primary formatting task is numbers. Number values can be inputed as: `BigNumber`, `BN`, `string`, `hex` or `actual numbers`. Because the blockchain does not support decimal or negative numbers, any kind of decimal or negative number will cause an error return. All received number values are returned as BN.js object instances.
 
-Read more about the formatting layer here: [ethjs-format](http://github.com/ethjs/ethjs-format)
+Read more about the formatting layer here: [ethjs-format](http://github.com/MetaMask/ethjs-format)
 
 ## Async Only
 
@@ -205,13 +194,13 @@ There is always a lot of work to do, and will have many rules to maintain. So pl
 
 Please consult our [Code of Conduct](CODE_OF_CONDUCT.md) docs before helping out.
 
-We communicate via [issues](https://github.com/ethjs/ethjs-query/issues) and [pull requests](https://github.com/ethjs/ethjs-query/pulls).
+We communicate via [issues](https://github.com/MetaMask/ethjs-query/issues) and [pull requests](https://github.com/MetaMask/ethjs-query/pulls).
 
 ## Important documents
 
 - [Changelog](CHANGELOG.md)
 - [Code of Conduct](CODE_OF_CONDUCT.md)
-- [License](https://raw.githubusercontent.com/ethjs/ethjs-query/master/LICENSE)
+- [License](https://raw.githubusercontent.com/MetaMask/ethjs-query/master/LICENSE)
 
 ## Licence
 

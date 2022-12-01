@@ -1,3 +1,24 @@
+# 0.4.0 -- maintenance update
+
+1. Renamed to @metamask/ethjs-query
+2. Fixed and removed broken devDependencies
+3. Require minimum nodejs v8.17, npm v6
+4. Repository location changed
+5. `npm prepublish` is now `npm prepare`
+
+# 0.3.8 -- performCall change
+
+1. Replace babel transforms with dependency babel-runtime
+2. performCall behaves differently
+
+
+# 0.3.7 -- various fixes
+1. Async and promise handling changes
+2. ethjs-rpc bump to 0.2.0
+3. Replaced ethereum-tesrpc with ganache-core
+
+# 0.3.6 -- ethjs-format bump to 0.2.7
+
 # 0.3.5 -- new eth filter ID changes
 
 1. Adds padded quantities

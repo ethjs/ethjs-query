@@ -11,7 +11,7 @@ npm install --save ethjs-query
 ## Install from Source
 
 ```
-git clone http://github.com/ethjs/ethjs-query
+git clone http://github.com/MetaMask/ethjs-query
 npm install
 ```
 
