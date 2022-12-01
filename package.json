@@ -40,8 +40,8 @@
     "web3"
   ],
   "engines": {
-    "npm": ">=3",
-    "node": ">=6.5.0"
+    "npm": ">=6",
+    "node": ">=8.17.0"
   },
   "author": "Nick Dodson <nick.dodson@consensys.net>",
   "license": "MIT",

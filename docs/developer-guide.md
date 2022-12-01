@@ -75,8 +75,8 @@ After build staging it is the `lib` folder which actually gets published to NPM.
 ## NPM/Node Version Requirements
 
 `ethjs` requires you have:
-  - `nodejs` -v 6.5.0+
-  - `npm` -v 3.0+
+  - `nodejs` -v 8.17.0+
+  - `npm` -v 6.0+
 
 This is a requirement to run, test, lint and build this module.
 
