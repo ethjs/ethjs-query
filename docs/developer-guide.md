@@ -33,16 +33,6 @@ npm run build
 npm run lint
 ```
 
-## Travis-ci and Coveralls Testing
-
-Note, this will generate a `coveralls` report locally.
-
-```
-npm run test-travis
-```
-
-You can find the coveralls report and view the percentages and stats, by going to the [index.html](coverage/lcov-report/index.html) file generated after running the `test-travis` script. Open this in Chrome to see the generated report. Travis will run mocha as usual, but collect information about the testing coverage. This report will be sent by TravisCI during the automated build process.
-
 ## Build Staging
 
 The build staging for this module is as follows:
@@ -74,7 +64,7 @@ All module source code is found in the `src` directory. All module helper script
     ./tests
 ```
 
-Note, the `./lib` dir is generated from the babel build staging. `./coverage` is generated from the `npm run test-travis` script. All internals and helper scripts (i.e. `webpack`) are in `./internals`. All distribution builds are in `./dist` (usually a minified and unminified production build of the package).
+Note, the `./lib` dir is generated from the babel build staging. `./coverage` is generated from the `npm run test:coverage` script. All internals and helper scripts (i.e. `webpack`) are in `./internals`. All distribution builds are in `./dist` (usually a minified and unminified production build of the package).
 
 ## NPM Practice
 
