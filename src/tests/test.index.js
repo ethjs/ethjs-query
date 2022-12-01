@@ -387,19 +387,6 @@ describe('ethjs-query', () => {
       done();
     });
 
-    it('should function while eth_getCompilers', (done) => {
-      const eth = new Eth(provider); // eslint-disable-line
-
-      eth.getCompilers((error, result) => {
-        assert.equal(error, null);
-        assert.equal(typeof result, 'object');
-        assert.equal(Array.isArray(result), true);
-        assert.equal(typeof result[0], 'string');
-
-        done();
-      });
-    });
-
     it('should function while eth_hashrate', (done) => {
       const eth = new Eth(provider); // eslint-disable-line
 
