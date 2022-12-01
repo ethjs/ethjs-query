@@ -3,7 +3,7 @@ const Eth = require('../index.js');
 const Eth2 = require('../index.js');
 const assert = require('chai').assert;
 const util = require('ethjs-util');
-const GanacheCore = require('ganache-core');
+const Ganache = require('ganache-cli');
 const BigNumber = require('bn.js');
 const abi = require('ethjs-abi');
 
@@ -11,7 +11,7 @@ describe('ethjs-query', () => {
   let provider;
 
   beforeEach(() => {
-    provider = GanacheCore.provider();
+    provider = Ganache.provider();
   });
 
   describe('construction', () => {
