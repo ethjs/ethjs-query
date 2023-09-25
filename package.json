@@ -33,6 +33,10 @@
     "type": "git",
     "url": "https://github.com/MetaMask/ethjs-query.git"
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "keywords": [
     "ethereum",
     "query",
